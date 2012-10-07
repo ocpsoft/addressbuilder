@@ -47,7 +47,7 @@ public class AddressBuilderTest
    }
 
    @Test
-   public void testBuildPathWithNoQuerySimple()
+   public void testBuildPathSimple()
    {
       Assert.assertEquals("/store/23",
                AddressBuilder.begin()
@@ -55,7 +55,7 @@ public class AddressBuilderTest
    }
 
    @Test
-   public void testBuildPathWithNoQueryWithOneParameter()
+   public void testBuildPathWithOneParameter()
    {
       Assert.assertEquals("/store/23",
                AddressBuilder.begin()
@@ -63,10 +63,19 @@ public class AddressBuilderTest
    }
 
    @Test
-   public void testBuildPathWithNoQueryWithParameters()
+   public void testBuildPathWithParameters()
    {
       Assert.assertEquals("/store/23/buy",
                AddressBuilder.begin()
+                        .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
+   }
+
+   @Test
+   public void testBuildHostAndPath()
+   {
+      Assert.assertEquals("ocpsoft.org/store/23/buy",
+               AddressBuilder.begin()
+                        .host("ocpsoft.org")
                         .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
    }
 
