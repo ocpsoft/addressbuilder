@@ -3,16 +3,16 @@ package org.ocpsoft.urlbuilder;
 
 public class AddressBuilderHost
 {
-   private AddressBuilder parent;
+   private Address parent;
 
-   AddressBuilderHost(AddressBuilder parent)
+   AddressBuilderHost(Address parent)
    {
       this.parent = parent;
    }
 
    public Address build()
    {
-      return parent;
+      return parent.build();
    }
 
    public AddressBuilderPort port(int port)
@@ -33,6 +33,12 @@ public class AddressBuilderHost
    public AddressBuilderAnchor anchor(String anchor)
    {
       return parent.anchor(anchor);
+   }  
+   
+   @Override
+   public String toString()
+   {
+      return parent.toString();
    }
 
 }

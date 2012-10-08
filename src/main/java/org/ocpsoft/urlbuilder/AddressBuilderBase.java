@@ -1,11 +1,11 @@
 package org.ocpsoft.urlbuilder;
 
 
-public class AddressBuilderProtocol
+public class AddressBuilderBase
 {
    private Address parent;
    
-   AddressBuilderProtocol(Address parent)
+   AddressBuilderBase(Address parent)
    {
       this.parent = parent;
    }
@@ -13,6 +13,11 @@ public class AddressBuilderProtocol
    public Address build()
    {
       return parent.build();
+   }
+
+   public AddressBuilderProtocol protocol(CharSequence host)
+   {
+      return parent.protocol(host);
    }
 
    public AddressBuilderHost host(CharSequence host)

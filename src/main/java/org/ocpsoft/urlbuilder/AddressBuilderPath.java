@@ -3,16 +3,16 @@ package org.ocpsoft.urlbuilder;
 
 public class AddressBuilderPath
 {
-   private AddressBuilder parent;
+   private Address parent;
 
-   AddressBuilderPath(AddressBuilder parent)
+   AddressBuilderPath(Address parent)
    {
       this.parent = parent;
    }
 
    public Address build()
    {
-      return parent;
+      return parent.build();
    }
 
    public AddressBuilderQuery query(CharSequence name, Object... values)
@@ -29,5 +29,11 @@ public class AddressBuilderPath
    {
       parent.set(name, values);
       return this;
-   }  
+   }    
+   
+   @Override
+   public String toString()
+   {
+      return parent.toString();
+   }
 }

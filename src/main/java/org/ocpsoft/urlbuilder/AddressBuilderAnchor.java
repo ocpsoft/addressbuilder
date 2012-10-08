@@ -1,18 +1,18 @@
 package org.ocpsoft.urlbuilder;
 
 
-public class AddressBuilderAnchor implements Address
+public class AddressBuilderAnchor
 {
-   private AddressBuilder parent;
+   private Address parent;
 
-   AddressBuilderAnchor(AddressBuilder parent)
+   AddressBuilderAnchor(Address parent)
    {
       this.parent = parent;
    }
 
    public Address build()
    {
-      return parent;
+      return parent.build();
    }
 
    public AddressBuilderAnchor set(CharSequence name, Object... values)
@@ -20,4 +20,10 @@ public class AddressBuilderAnchor implements Address
       parent.set(name, values);
       return this;
    }  
+   
+   @Override
+   public String toString()
+   {
+      return parent.toString();
+   }
 }

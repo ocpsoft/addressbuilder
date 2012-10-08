@@ -12,7 +12,7 @@ public class AddressBuilderTest
    {
       Assert.assertEquals("http://example.com:8080/search/table?q=query string#foo",
 
-               AddressBuilder.begin()
+               Address.begin()
                         .protocol("http")
                         .host("example.com")
                         .port(8080)
@@ -28,7 +28,7 @@ public class AddressBuilderTest
    public void testBuildQuery()
    {
       Assert.assertEquals("?q=200",
-               AddressBuilder.begin()
+               Address.begin()
                         .query("q", 200).toString());
    }
 
@@ -36,7 +36,7 @@ public class AddressBuilderTest
    public void testBuildQueryMultipleNames()
    {
       Assert.assertEquals("?q=query&e=string",
-               AddressBuilder.begin()
+               Address.begin()
                         .query("q", "query").query("e", "string").toString());
    }
 
@@ -44,7 +44,7 @@ public class AddressBuilderTest
    public void testBuildQueryMultipleValues()
    {
       Assert.assertEquals("?q=10&q=20",
-               AddressBuilder.begin()
+               Address.begin()
                         .query("q", 10, 20).toString());
    }
 
@@ -52,7 +52,7 @@ public class AddressBuilderTest
    public void testBuildPathSimple()
    {
       Assert.assertEquals("/store/23",
-               AddressBuilder.begin()
+               Address.begin()
                         .path("/store/23").toString());
    }
 
@@ -60,7 +60,7 @@ public class AddressBuilderTest
    public void testBuildPathWithOneParameter()
    {
       Assert.assertEquals("/store/23",
-               AddressBuilder.begin()
+               Address.begin()
                         .path("/store/{item}").set("item", 23).toString());
    }
 
@@ -68,7 +68,7 @@ public class AddressBuilderTest
    public void testBuildPathWithParameters()
    {
       Assert.assertEquals("/store/23/buy",
-               AddressBuilder.begin()
+               Address.begin()
                         .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
    }
 
@@ -76,7 +76,7 @@ public class AddressBuilderTest
    public void testBuildHostAndPath()
    {
       Assert.assertEquals("ocpsoft.org/store/23/buy",
-               AddressBuilder.begin()
+               Address.begin()
                         .host("ocpsoft.org")
                         .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
    }
@@ -85,7 +85,7 @@ public class AddressBuilderTest
    public void testProtocolAndPort()
    {
       Assert.assertEquals("file://:80",
-               AddressBuilder.begin()
+               Address.begin()
                         .protocol("file")
                         .port(80).toString());
    }
