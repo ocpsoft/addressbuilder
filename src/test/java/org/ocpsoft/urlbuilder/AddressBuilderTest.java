@@ -10,12 +10,13 @@ public class AddressBuilderTest
    @Test
    public void testBuildEverything()
    {
-      Assert.assertEquals("http://example.com:8080/search/table?q=query string",
+      Assert.assertEquals("http://example.com:8080/search/table?q=query string#foo",
 
                AddressBuilder.begin()
                         .protocol("http")
                         .host("example.com")
                         .port(8080)
+                        .anchor("foo")
                         .path("/{s}/{t}")
                         .set("s", "search")
                         .set("t", "table")
@@ -77,6 +78,15 @@ public class AddressBuilderTest
                AddressBuilder.begin()
                         .host("ocpsoft.org")
                         .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
+   }
+
+   @Test
+   public void testProtocolAndPort()
+   {
+      Assert.assertEquals("file://:80",
+               AddressBuilder.begin()
+                        .protocol("file")
+                        .port(80).toString());
    }
 
 }

@@ -17,6 +17,7 @@ public class AddressBuilder implements Address
    private volatile CharSequence path;
    private Map<CharSequence, List<Object>> parameters = new LinkedHashMap<CharSequence, List<Object>>();
    private Map<CharSequence, List<Object>> queries = new LinkedHashMap<CharSequence, List<Object>>();
+   private String anchor;
 
    private AddressBuilder()
    {}
@@ -58,6 +59,12 @@ public class AddressBuilder implements Address
    public AddressBuilder query(CharSequence name, Object... values)
    {
       this.queries.put(name.toString(), Arrays.asList(values));
+      return this;
+   }
+
+   public AddressBuilder anchor(String anchor)
+   {
+      this.anchor = anchor;
       return this;
    }
 
@@ -107,6 +114,9 @@ public class AddressBuilder implements Address
             }
          }
       }
+
+      if (isSet(anchor))
+         result.append('#').append(anchor);
 
       return result.toString();
    }
