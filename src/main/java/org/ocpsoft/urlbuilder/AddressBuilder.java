@@ -17,7 +17,7 @@ public class AddressBuilder implements Address
    private volatile CharSequence path;
    private Map<CharSequence, List<Object>> parameters = new LinkedHashMap<CharSequence, List<Object>>();
    private Map<CharSequence, List<Object>> queries = new LinkedHashMap<CharSequence, List<Object>>();
-   private String anchor;
+   private CharSequence anchor;
 
    private AddressBuilder()
    {}
@@ -32,46 +32,45 @@ public class AddressBuilder implements Address
       return this;
    }
 
-   public AddressBuilder protocol(String protocol)
+   public AddressBuilderProtocol protocol(CharSequence protocol)
    {
       this.protocol = protocol;
-      return this;
+      return new AddressBuilderProtocol(this);
    }
 
-   public AddressBuilder host(CharSequence host)
+   public AddressBuilderHost host(CharSequence host)
    {
       this.host = host;
-      return this;
+      return new AddressBuilderHost(this);
    }
 
-   public AddressBuilder port(int port)
+   public AddressBuilderPort port(int port)
    {
       this.port = port;
-      return this;
+      return new AddressBuilderPort(this);
    }
 
-   public AddressBuilder path(CharSequence path)
+   public AddressBuilderPath path(CharSequence path)
    {
       this.path = path;
-      return this;
+      return new AddressBuilderPath(this);
    }
 
-   public AddressBuilder query(CharSequence name, Object... values)
+   public AddressBuilderQuery query(CharSequence name, Object... values)
    {
       this.queries.put(name.toString(), Arrays.asList(values));
-      return this;
+      return new AddressBuilderQuery(this);
    }
 
-   public AddressBuilder anchor(String anchor)
+   public AddressBuilderAnchor anchor(CharSequence anchor)
    {
       this.anchor = anchor;
-      return this;
+      return new AddressBuilderAnchor(this);
    }
 
-   public AddressBuilder set(CharSequence name, Object... values)
+   void set(CharSequence name, Object... values)
    {
       this.parameters.put(name.toString(), Arrays.asList(values));
-      return this;
    }
 
    @Override

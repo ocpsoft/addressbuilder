@@ -16,11 +16,12 @@ public class AddressBuilderTest
                         .protocol("http")
                         .host("example.com")
                         .port(8080)
-                        .anchor("foo")
                         .path("/{s}/{t}")
                         .set("s", "search")
                         .set("t", "table")
-                        .query("q", "query string").toString());
+                        .query("q", "query string")
+                        .anchor("foo")
+                        .toString());
    }
 
    @Test
