@@ -40,6 +40,11 @@ public class AddressBuilderBase
       return parent.query(name, values);
    }
 
+   public AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   {
+      return parent.query(name, encode, values);
+   }
+
    public AddressBuilderAnchor anchor(String anchor)
    {
       return parent.anchor(anchor);

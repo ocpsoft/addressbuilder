@@ -10,7 +10,7 @@ public class AddressBuilderTest
    @Test
    public void testBuildEverything()
    {
-      Assert.assertEquals("http://example.com:8080/search/table?q=query string#foo",
+      Assert.assertEquals("http://example.com:8080/search/table?q=query+string#foo",
 
                Address.begin()
                         .protocol("http")
@@ -88,6 +88,32 @@ public class AddressBuilderTest
                Address.begin()
                         .protocol("file")
                         .port(80).toString());
+   }
+
+   @Test
+   public void testParameterEncoding()
+   {
+      Assert.assertEquals("http://localhost/a%20b?q=a+b",
+               Address.begin()
+                        .protocol("http")
+                        .host("localhost")
+                        .path("/{p}")
+                        .set("p", "a b")
+                        .query("q", "a b")
+                        .toString());
+   }
+
+   @Test
+   public void testParametersWithoutEncoding()
+   {
+      Assert.assertEquals("http://localhost/a%20b?q=a+b",
+               Address.begin()
+                        .protocol("http")
+                        .host("localhost")
+                        .path("/{p}")
+                        .set("p", false, "a%20b")
+                        .query("q", false, "a+b")
+                        .toString());
    }
 
 }

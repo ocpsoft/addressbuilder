@@ -1,8 +1,6 @@
 package org.ocpsoft.urlbuilder;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.ocpsoft.urlbuilder.util.CaptureType;
@@ -15,8 +13,8 @@ public class Address
    private volatile CharSequence host;
    private volatile Integer port;
    private volatile CharSequence path;
-   private Map<CharSequence, List<Object>> parameters = new LinkedHashMap<CharSequence, List<Object>>();
-   private Map<CharSequence, List<Object>> queries = new LinkedHashMap<CharSequence, List<Object>>();
+   private Map<CharSequence, Parameter> parameters = new LinkedHashMap<CharSequence, Parameter>();
+   private Map<CharSequence, Parameter> queries = new LinkedHashMap<CharSequence, Parameter>();
    private CharSequence anchor;
 
    private Address()
@@ -58,7 +56,12 @@ public class Address
 
    AddressBuilderQuery query(CharSequence name, Object... values)
    {
-      this.queries.put(name.toString(), Arrays.asList(values));
+      return query(name, true, values);
+   }
+
+   AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   {
+      this.queries.put(name.toString(), Parameter.create(name.toString(), encode, values));
       return new AddressBuilderQuery(this);
    }
 
@@ -70,7 +73,12 @@ public class Address
 
    void set(CharSequence name, Object... values)
    {
-      this.parameters.put(name.toString(), Arrays.asList(values));
+      set(name, true, values);
+   }
+
+   void set(CharSequence name, boolean encode, Object... values)
+   {
+      this.parameters.put(name.toString(), Parameter.create(name.toString(), encode, values));
    }
 
    @Override
@@ -101,15 +109,15 @@ public class Address
          result.append('?');
          boolean first = true;
          for (CharSequence name : queries.keySet()) {
-            List<Object> values = queries.get(name);
-            for (Object value : values) {
+            Parameter parameter = queries.get(name);
+            for (int i = 0; i < parameter.getValueCount(); i++) {
 
                if (!first)
                   result.append('&');
                else
                   first = false;
 
-               result.append(name).append('=').append(value);
+               result.append(name).append('=').append(parameter.getValueAsQueryParam(i));
             }
          }
       }
@@ -140,12 +148,12 @@ public class Address
 
             String name = group.getCaptured().toString();
 
-            List<Object> value = parameters.get(name);
-            if (value == null || value.isEmpty())
+            Parameter parameter = parameters.get(name);
+            if (parameter == null || !parameter.hasValues())
                throw new IllegalStateException("No parameter [" + name + "] was set in the pattern [" + sequence
                         + "]. Call address.set(\"" + name + "\", value); or remove the parameter from the pattern.");
 
-            result.append(value.get(0));
+            result.append(parameter.getValueAsPathParam(0));
 
             break;
 

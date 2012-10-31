@@ -20,6 +20,11 @@ public class AddressBuilderPath
       return parent.query(name, values);
    }
 
+   public AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   {
+      return parent.query(name, encode, values);
+   }
+
    public AddressBuilderAnchor anchor(String anchor)
    {
       return parent.anchor(anchor);
@@ -28,6 +33,12 @@ public class AddressBuilderPath
    public AddressBuilderPath set(CharSequence name, Object... values)
    {
       parent.set(name, values);
+      return this;
+   }
+
+   public AddressBuilderPath set(CharSequence name, boolean encode, Object... values)
+   {
+      parent.set(name, encode, values);
       return this;
    }    
    

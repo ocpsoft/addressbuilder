@@ -24,7 +24,12 @@ public class AddressBuilderQuery
    {
       return parent.query(name, value);
    }  
-   
+
+   public AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   {
+      return parent.query(name, encode, values);
+   }
+
    @Override
    public String toString()
    {
