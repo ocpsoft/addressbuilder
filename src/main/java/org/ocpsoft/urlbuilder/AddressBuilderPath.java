@@ -20,9 +20,9 @@ public class AddressBuilderPath
       return parent.query(name, values);
    }
 
-   public AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   public AddressBuilderQuery queryEncoded(CharSequence name, Object... values)
    {
-      return parent.query(name, encode, values);
+      return parent.queryEncoded(name, values);
    }
 
    public AddressBuilderAnchor anchor(String anchor)
@@ -36,12 +36,12 @@ public class AddressBuilderPath
       return this;
    }
 
-   public AddressBuilderPath set(CharSequence name, boolean encode, Object... values)
+   public AddressBuilderPath setEncoded(CharSequence name, Object... values)
    {
-      parent.set(name, encode, values);
+      parent.setEncoded(name, values);
       return this;
-   }    
-   
+   }
+
    @Override
    public String toString()
    {

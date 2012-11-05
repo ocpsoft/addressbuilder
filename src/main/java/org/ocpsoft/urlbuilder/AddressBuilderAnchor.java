@@ -21,12 +21,12 @@ public class AddressBuilderAnchor
       return this;
    }  
 
-   public AddressBuilderAnchor set(CharSequence name, boolean encode, Object... values)
+   public AddressBuilderAnchor setEncoded(CharSequence name, Object... values)
    {
-      parent.set(name, encode, values);
+      parent.setEncoded(name, values);
       return this;
    }
-   
+
    @Override
    public String toString()
    {

@@ -111,8 +111,8 @@ public class AddressBuilderTest
                         .protocol("http")
                         .host("localhost")
                         .path("/{p}")
-                        .set("p", false, "a%20b")
-                        .query("q", false, "a+b")
+                        .setEncoded("p", "a%20b")
+                        .queryEncoded("q", "a+b")
                         .toString());
    }
 

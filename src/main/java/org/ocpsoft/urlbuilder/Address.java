@@ -56,12 +56,13 @@ public class Address
 
    AddressBuilderQuery query(CharSequence name, Object... values)
    {
-      return query(name, true, values);
+      this.queries.put(name.toString(), Parameter.create(name.toString(), true, values));
+      return new AddressBuilderQuery(this);
    }
 
-   AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   AddressBuilderQuery queryEncoded(CharSequence name, Object... values)
    {
-      this.queries.put(name.toString(), Parameter.create(name.toString(), encode, values));
+      this.queries.put(name.toString(), Parameter.create(name.toString(), false, values));
       return new AddressBuilderQuery(this);
    }
 
@@ -73,12 +74,12 @@ public class Address
 
    void set(CharSequence name, Object... values)
    {
-      set(name, true, values);
+      this.parameters.put(name.toString(), Parameter.create(name.toString(), true, values));
    }
 
-   void set(CharSequence name, boolean encode, Object... values)
+   void setEncoded(CharSequence name, Object... values)
    {
-      this.parameters.put(name.toString(), Parameter.create(name.toString(), encode, values));
+      this.parameters.put(name.toString(), Parameter.create(name.toString(), false, values));
    }
 
    @Override

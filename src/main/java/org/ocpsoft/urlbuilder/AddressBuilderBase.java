@@ -40,9 +40,9 @@ public class AddressBuilderBase
       return parent.query(name, values);
    }
 
-   public AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   public AddressBuilderQuery queryEncoded(CharSequence name, Object... values)
    {
-      return parent.query(name, encode, values);
+      return parent.queryEncoded(name, values);
    }
 
    public AddressBuilderAnchor anchor(String anchor)

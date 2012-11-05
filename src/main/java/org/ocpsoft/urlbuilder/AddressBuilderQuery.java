@@ -25,9 +25,9 @@ public class AddressBuilderQuery
       return parent.query(name, value);
    }  
 
-   public AddressBuilderQuery query(CharSequence name, boolean encode, Object... values)
+   public AddressBuilderQuery queryEncoded(CharSequence name, Object value)
    {
-      return parent.query(name, encode, values);
+      return parent.queryEncoded(name, value);
    }
 
    @Override
