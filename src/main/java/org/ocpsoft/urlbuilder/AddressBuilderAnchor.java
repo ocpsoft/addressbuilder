@@ -15,18 +15,6 @@ public class AddressBuilderAnchor
       return parent.build();
    }
 
-   public AddressBuilderAnchor set(CharSequence name, Object... values)
-   {
-      parent.set(name, values);
-      return this;
-   }  
-
-   public AddressBuilderAnchor setEncoded(CharSequence name, Object... values)
-   {
-      parent.setEncoded(name, values);
-      return this;
-   }
-
    @Override
    public String toString()
    {
