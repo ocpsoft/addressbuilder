@@ -23,6 +23,10 @@ public class EncoderTest
    {
       assertEquals("test", Encoder.query("test"));
       assertEquals("hello+world", Encoder.query("hello world"));
+      assertEquals("a%7Cb", Encoder.query("a|b"));
+      assertEquals("%5Btest%5D", Encoder.query("[test]"));
+      assertEquals("%22a%22", Encoder.query("\"a\""));
+      assertEquals("Really%3F", Encoder.query("Really?"));
    }
 
 }
