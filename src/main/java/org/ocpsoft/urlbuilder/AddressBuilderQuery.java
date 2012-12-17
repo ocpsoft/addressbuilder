@@ -1,11 +1,10 @@
 package org.ocpsoft.urlbuilder;
 
-
 public class AddressBuilderQuery
 {
-   private Address parent;
+   private AddressBuilder parent;
 
-   AddressBuilderQuery(Address parent)
+   AddressBuilderQuery(AddressBuilder parent)
    {
       this.parent = parent;
    }
@@ -19,15 +18,20 @@ public class AddressBuilderQuery
    {
       return parent.anchor(anchor);
    }
-   
+
    public AddressBuilderQuery query(CharSequence name, Object value)
    {
       return parent.query(name, value);
-   }  
+   }
 
    public AddressBuilderQuery queryEncoded(CharSequence name, Object value)
    {
       return parent.queryEncoded(name, value);
+   }
+
+   public AddressBuilderQuery queryLiteral(String query)
+   {
+      return parent.queryLiteral(query);
    }
 
    @Override

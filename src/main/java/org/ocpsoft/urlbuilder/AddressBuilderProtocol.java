@@ -1,11 +1,10 @@
 package org.ocpsoft.urlbuilder;
 
-
 public class AddressBuilderProtocol
 {
-   private Address parent;
-   
-   AddressBuilderProtocol(Address parent)
+   private AddressBuilder parent;
+
+   AddressBuilderProtocol(AddressBuilder parent)
    {
       this.parent = parent;
    }
@@ -40,11 +39,16 @@ public class AddressBuilderProtocol
       return parent.queryEncoded(name, values);
    }
 
+   public AddressBuilderQuery queryLiteral(String query)
+   {
+      return parent.queryLiteral(query);
+   }
+
    public AddressBuilderAnchor anchor(String anchor)
    {
       return parent.anchor(anchor);
-   }  
-   
+   }
+
    @Override
    public String toString()
    {

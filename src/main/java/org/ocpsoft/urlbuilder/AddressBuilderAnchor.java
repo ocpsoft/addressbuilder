@@ -1,11 +1,10 @@
 package org.ocpsoft.urlbuilder;
 
-
 public class AddressBuilderAnchor
 {
-   private Address parent;
+   private AddressBuilder parent;
 
-   AddressBuilderAnchor(Address parent)
+   AddressBuilderAnchor(AddressBuilder parent)
    {
       this.parent = parent;
    }

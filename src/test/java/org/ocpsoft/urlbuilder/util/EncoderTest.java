@@ -16,7 +16,7 @@ public class EncoderTest
       assertEquals("%5Btest%5D", Encoder.path("[test]"));
       assertEquals("%22a%22", Encoder.path("\"a\""));
       assertEquals("Really%3F", Encoder.path("Really?"));
-      assertEquals("foo%26bar", Encoder.path("foo&bar"));
+      assertEquals("foo&bar", Encoder.path("foo&bar"));
    }
 
    @Test

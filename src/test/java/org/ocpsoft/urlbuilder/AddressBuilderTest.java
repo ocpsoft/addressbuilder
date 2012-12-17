@@ -12,7 +12,7 @@ public class AddressBuilderTest
    {
       Assert.assertEquals("http://example.com:8080/search/table?q=query+string#foo",
 
-               Address.begin()
+               AddressBuilder.begin()
                         .protocol("http")
                         .host("example.com")
                         .port(8080)
@@ -25,76 +25,214 @@ public class AddressBuilderTest
    }
 
    @Test
+   public void testBuildEverythingResult()
+   {
+      Assert.assertEquals("http://example.com:8080/search/table?q=query+string#foo",
+
+               AddressBuilder.begin()
+                        .protocol("http")
+                        .host("example.com")
+                        .port(8080)
+                        .path("/{s}/{t}")
+                        .set("s", "search")
+                        .set("t", "table")
+                        .query("q", "query string")
+                        .anchor("foo")
+                        .build()
+                        .toString());
+   }
+
+   @Test
+   public void testBuildQueryWithAmpersandInName()
+   {
+      Assert.assertEquals("?q%26q=200",
+               AddressBuilder.begin().query("q&q", 200).toString());
+   }
+
+   @Test
+   public void testBuildQueryWithAmpersandInValue()
+   {
+      Assert.assertEquals("?q=%26200",
+               AddressBuilder.begin().query("q", "&200").toString());
+   }
+
+   @Test
+   public void testBuildQueryWithQuestionMarkInName()
+   {
+      Assert.assertEquals("??q=200",
+               AddressBuilder.begin().queryEncoded("?q=200").toString());
+   }
+
+   @Test
+   public void testBuildQueryWithQuestionMarkInValue()
+   {
+      Assert.assertEquals("?q=?200",
+               AddressBuilder.begin().queryEncoded("q", "?200").toString());
+   }
+
+   @Test
    public void testBuildQuery()
    {
       Assert.assertEquals("?q=200",
-               Address.begin()
-                        .query("q", 200).toString());
+               AddressBuilder.begin().query("q", 200).toString());
+   }
+
+   @Test
+   public void testBuildQueryResult()
+   {
+      Assert.assertEquals("?q=200",
+               AddressBuilder.begin().query("q", 200).build().toString());
    }
 
    @Test
    public void testBuildQueryMultipleNames()
    {
       Assert.assertEquals("?q=query&e=string",
-               Address.begin()
-                        .query("q", "query").query("e", "string").toString());
+               AddressBuilder.begin().query("q", "query").query("e", "string").toString());
+   }
+
+   @Test
+   public void testBuildQueryMultipleNamesResult()
+   {
+      Assert.assertEquals("?q=query&e=string",
+               AddressBuilder.begin().query("q", "query").query("e", "string").build().toString());
    }
 
    @Test
    public void testBuildQueryMultipleValues()
    {
       Assert.assertEquals("?q=10&q=20",
-               Address.begin()
-                        .query("q", 10, 20).toString());
+               AddressBuilder.begin().query("q", 10, 20).toString());
+   }
+
+   @Test
+   public void testBuildQueryMultipleValuesResult()
+   {
+      Assert.assertEquals("?q=10&q=20",
+               AddressBuilder.begin().query("q", 10, 20).build().toString());
+   }
+
+   @Test
+   public void testBuildQueryLiteral()
+   {
+      Assert.assertEquals("?q=200",
+               AddressBuilder.begin().queryLiteral("q=200").toString());
+   }
+
+   @Test
+   public void testBuildQueryLiteralResult()
+   {
+      Assert.assertEquals("?q=200",
+               AddressBuilder.begin().queryLiteral("q=200").build().toString());
+   }
+
+   @Test
+   public void testBuildQueryLiteralMultipleNames()
+   {
+      Assert.assertEquals("?q=query&e=string",
+               AddressBuilder.begin().queryLiteral("q=query&e=string").toString());
+   }
+
+   @Test
+   public void testBuildQueryLiteralMultipleNamesResult()
+   {
+      Assert.assertEquals("?q=query&e=string",
+               AddressBuilder.begin().queryLiteral("q=query&e=string").build().toString());
+   }
+
+   @Test
+   public void testBuildQueryLiteralMultipleValues()
+   {
+      Assert.assertEquals("?q=10&q=20",
+               AddressBuilder.begin().queryLiteral("q=10&q=20").toString());
+   }
+
+   @Test
+   public void testBuildQueryLiteralMultipleValuesResult()
+   {
+      Assert.assertEquals("?q=10&q=20",
+               AddressBuilder.begin().queryLiteral("q=10&q=20").build().toString());
    }
 
    @Test
    public void testBuildPathSimple()
    {
       Assert.assertEquals("/store/23",
-               Address.begin()
-                        .path("/store/23").toString());
+               AddressBuilder.begin().path("/store/23").toString());
+   }
+
+   @Test
+   public void testBuildPathSimpleResult()
+   {
+      Assert.assertEquals("/store/23",
+               AddressBuilder.begin().path("/store/23").build().toString());
    }
 
    @Test
    public void testBuildPathWithOneParameter()
    {
       Assert.assertEquals("/store/23",
-               Address.begin()
-                        .path("/store/{item}").set("item", 23).toString());
+               AddressBuilder.begin().path("/store/{item}").set("item", 23).toString());
+   }
+
+   @Test
+   public void testBuildPathWithOneParameterResult()
+   {
+      Assert.assertEquals("/store/23",
+               AddressBuilder.begin().path("/store/{item}").set("item", 23).build().toString());
    }
 
    @Test
    public void testBuildPathWithParameters()
    {
       Assert.assertEquals("/store/23/buy",
-               Address.begin()
-                        .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
+               AddressBuilder.begin().path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
+   }
+
+   @Test
+   public void testBuildPathWithParametersResult()
+   {
+      Assert.assertEquals("/store/23/buy",
+               AddressBuilder.begin().path("/store/{item}/{action}").set("item", 23).set("action", "buy").build()
+                        .toString());
    }
 
    @Test
    public void testBuildHostAndPath()
    {
       Assert.assertEquals("ocpsoft.org/store/23/buy",
-               Address.begin()
+               AddressBuilder.begin()
                         .host("ocpsoft.org")
                         .path("/store/{item}/{action}").set("item", 23).set("action", "buy").toString());
+   }
+
+   @Test
+   public void testBuildHostAndPathResult()
+   {
+      Assert.assertEquals("ocpsoft.org/store/23/buy",
+               AddressBuilder.begin().host("ocpsoft.org")
+                        .path("/store/{item}/{action}").set("item", 23).set("action", "buy").build().toString());
    }
 
    @Test
    public void testProtocolAndPort()
    {
       Assert.assertEquals("file://:80",
-               Address.begin()
-                        .protocol("file")
-                        .port(80).toString());
+               AddressBuilder.begin().protocol("file").port(80).toString());
+   }
+
+   @Test
+   public void testProtocolAndPortResult()
+   {
+      Assert.assertEquals("file://:80",
+               AddressBuilder.begin().protocol("file").port(80).build().toString());
    }
 
    @Test
    public void testParameterEncoding()
    {
       Assert.assertEquals("http://localhost/a%20b?q=a+b",
-               Address.begin()
+               AddressBuilder.begin()
                         .protocol("http")
                         .host("localhost")
                         .path("/{p}")
@@ -104,15 +242,43 @@ public class AddressBuilderTest
    }
 
    @Test
+   public void testParameterEncodingResult()
+   {
+      Assert.assertEquals("http://localhost/a%20b?q=a+b",
+               AddressBuilder.begin()
+                        .protocol("http")
+                        .host("localhost")
+                        .path("/{p}")
+                        .set("p", "a b")
+                        .query("q", "a b")
+                        .build()
+                        .toString());
+   }
+
+   @Test
    public void testParametersWithoutEncoding()
    {
       Assert.assertEquals("http://localhost/a%20b?q=a+b",
-               Address.begin()
+               AddressBuilder.begin()
                         .protocol("http")
                         .host("localhost")
                         .path("/{p}")
                         .setEncoded("p", "a%20b")
                         .queryEncoded("q", "a+b")
+                        .toString());
+   }
+
+   @Test
+   public void testParametersWithoutEncodingResult()
+   {
+      Assert.assertEquals("http://localhost/a%20b?q=a+b",
+               AddressBuilder.begin()
+                        .protocol("http")
+                        .host("localhost")
+                        .path("/{p}")
+                        .setEncoded("p", "a%20b")
+                        .queryEncoded("q", "a+b")
+                        .build()
                         .toString());
    }
 
