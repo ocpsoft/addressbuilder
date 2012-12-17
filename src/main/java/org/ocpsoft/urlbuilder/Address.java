@@ -8,6 +8,8 @@ public interface Address
 
    String getPath();
 
+   String getPathAndQuery();
+
    boolean isPathSet();
 
    Integer getPort();

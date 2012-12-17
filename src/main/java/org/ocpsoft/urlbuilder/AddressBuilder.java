@@ -58,7 +58,7 @@ public class AddressBuilder
       }
       catch (URISyntaxException e) {
          throw new IllegalArgumentException(
-                  "Must pass a properly encoded URL or URL fragment. Consider encoding relevant portions of the URL with ["
+                  "[" + url + "] is not a valid URL fragment. Consider encoding relevant portions of the URL with ["
                            + Encoder.class + "]", e);
       }
    }

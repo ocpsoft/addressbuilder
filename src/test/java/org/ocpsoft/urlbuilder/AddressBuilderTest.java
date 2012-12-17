@@ -210,6 +210,7 @@ public class AddressBuilderTest
       assertEquals(Integer.valueOf(80), address.getPort());
       assertEquals("/search", address.getPath());
       assertEquals("q=foobar", address.getQuery());
+      assertEquals("/search?q=foobar", address.getPathAndQuery());
    }
 
    @Test
@@ -221,6 +222,7 @@ public class AddressBuilderTest
       assertEquals(null, address.getPort());
       assertEquals("/search", address.getPath());
       assertEquals("q=foobar", address.getQuery());
+      assertEquals("/search?q=foobar", address.getPathAndQuery());
    }
 
    @Test
@@ -232,6 +234,7 @@ public class AddressBuilderTest
       assertEquals(null, address.getPort());
       assertEquals("/search", address.getPath());
       assertEquals("q=foobar", address.getQuery());
+      assertEquals("/search?q=foobar", address.getPathAndQuery());
    }
 
 }

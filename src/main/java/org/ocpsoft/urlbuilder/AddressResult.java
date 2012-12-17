@@ -197,6 +197,17 @@ class AddressResult implements Address
    }
 
    @Override
+   public String getPathAndQuery()
+   {
+      StringBuilder result = new StringBuilder();
+      if (isPathSet())
+         result.append(getPath());
+      if (isQuerySet())
+         result.append('?').append(getQuery());
+      return result.toString();
+   }
+
+   @Override
    public boolean isPathSet()
    {
       return isSet(path);
