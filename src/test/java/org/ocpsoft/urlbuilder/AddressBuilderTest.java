@@ -1,5 +1,6 @@
 package org.ocpsoft.urlbuilder;
 
+import static org.junit.Assert.assertEquals;
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -280,6 +281,39 @@ public class AddressBuilderTest
                         .queryEncoded("q", "a+b")
                         .build()
                         .toString());
+   }
+
+   @Test
+   public void testFromStringWithFullUrl()
+   {
+      Address address = AddressBuilder.create("http://www.google.com:80/search?q=foobar");
+      assertEquals("http", address.getProtocol());
+      assertEquals("www.google.com", address.getHost());
+      assertEquals(Integer.valueOf(80), address.getPort());
+      assertEquals("/search", address.getPath());
+      assertEquals("q=foobar", address.getQuery());
+   }
+
+   @Test
+   public void testFromStringWithoutPort()
+   {
+      Address address = AddressBuilder.create("http://www.google.com/search?q=foobar");
+      assertEquals("http", address.getProtocol());
+      assertEquals("www.google.com", address.getHost());
+      assertEquals(null, address.getPort());
+      assertEquals("/search", address.getPath());
+      assertEquals("q=foobar", address.getQuery());
+   }
+
+   @Test
+   public void testFromStringOnlyWithPathAndQuery()
+   {
+      Address address = AddressBuilder.create("/search?q=foobar");
+      assertEquals(null, address.getProtocol());
+      assertEquals(null, address.getHost());
+      assertEquals(null, address.getPort());
+      assertEquals("/search", address.getPath());
+      assertEquals("q=foobar", address.getQuery());
    }
 
 }

@@ -42,11 +42,26 @@ public class AddressBuilder
    public static Address create(String url)
    {
       try {
-         URL u = new URL(url);
-         Address address = AddressBuilder.begin().protocol(u.getProtocol()).host(u.getHost())
-                  .port(u.getPort() == -1 ? null : u.getPort())
-                  .path(u.getPath()).queryLiteral(u.getQuery()).anchor(u.getRef()).build();
-         return address;
+
+         boolean startWithPath = url.startsWith("/");
+
+         URL u = null;
+         if (startWithPath) {
+            u = new URL("http://127.0.0.1" + url);
+         }
+         else {
+            u = new URL(url);
+         }
+
+         AddressBuilderBase builder = AddressBuilder.begin();
+         if (!startWithPath) {
+            builder.protocol(u.getProtocol()).host(u.getHost());
+            if (u.getPort() != -1) {
+               builder.port(u.getPort());
+            }
+         }
+
+         return builder.path(u.getPath()).queryLiteral(u.getQuery()).anchor(u.getRef()).build();
       }
       catch (MalformedURLException e) {
          throw new RuntimeException(e);
