@@ -14,12 +14,12 @@ public class Encoder
    /**
     * Encodes the given string as described in RFC 2396
     */
-   public static String path(String s)
+   public static String path(CharSequence s)
    {
       try
       {
-         final URI uri = new URI("http", "localhost", "/" + s, null);
-         return uri.toASCIIString().substring(17);
+         final URI uri = new URI("http", "0.0.0.0", "/" + s, null);
+         return uri.toASCIIString().substring(15);
       }
       catch (URISyntaxException e)
       {
@@ -30,10 +30,10 @@ public class Encoder
    /**
     * Encodes the given string using HTML form encoding
     */
-   public static String query(String s)
+   public static String query(CharSequence s)
    {
       try {
-         return URLEncoder.encode(s, UTF8.name());
+         return URLEncoder.encode(s.toString(), UTF8.name());
       }
       catch (UnsupportedEncodingException e) {
          throw new IllegalStateException(e);

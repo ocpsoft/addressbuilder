@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.ocpsoft.urlbuilder.util.CaptureType;
 import org.ocpsoft.urlbuilder.util.CapturingGroup;
+import org.ocpsoft.urlbuilder.util.Encoder;
 import org.ocpsoft.urlbuilder.util.ParseTools;
 
 class AddressResult implements Address
@@ -71,7 +72,11 @@ class AddressResult implements Address
          if (parameter.getValueCount() > 0)
          {
             for (int i = 0; i < parameter.getValueCount(); i++) {
-               result.append('=').append(parameter.getValueAsQueryParam(i));
+               String value = parameter.getValueAsQueryParam(i);
+
+               if (value != null)
+                  result.append('=').append(value);
+
                if (i < parameter.getValueCount() - 1)
                {
                   result.append('&').append(name);
@@ -123,7 +128,7 @@ class AddressResult implements Address
          switch (sequence.charAt(cursor))
          {
          case '{':
-            result.append(sequence.subSequence(lastEnd, cursor));
+            result.append(Encoder.path(sequence.subSequence(lastEnd, cursor)));
 
             int startPos = cursor;
             CapturingGroup group = ParseTools.balancedCapture(sequence, startPos, sequence.length() - 1,
@@ -150,7 +155,7 @@ class AddressResult implements Address
       }
 
       if (cursor >= lastEnd)
-         result.append(sequence.subSequence(lastEnd, cursor));
+         result.append(Encoder.path(sequence.subSequence(lastEnd, cursor)));
       return result;
    }
 

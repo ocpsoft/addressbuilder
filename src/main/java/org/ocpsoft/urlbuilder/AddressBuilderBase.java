@@ -34,6 +34,11 @@ public class AddressBuilderBase
       return parent.path(path);
    }
 
+   public AddressBuilderPath pathEncoded(CharSequence path)
+   {
+      return parent.pathEncoded(path);
+   }
+
    public AddressBuilderQuery query(CharSequence name, Object... values)
    {
       return parent.query(name, values);

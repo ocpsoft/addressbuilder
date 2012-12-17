@@ -44,34 +44,6 @@ public class AddressBuilderTest
    }
 
    @Test
-   public void testBuildQueryWithAmpersandInName()
-   {
-      Assert.assertEquals("?q%26q=200",
-               AddressBuilder.begin().query("q&q", 200).toString());
-   }
-
-   @Test
-   public void testBuildQueryWithAmpersandInValue()
-   {
-      Assert.assertEquals("?q=%26200",
-               AddressBuilder.begin().query("q", "&200").toString());
-   }
-
-   @Test
-   public void testBuildQueryWithQuestionMarkInName()
-   {
-      Assert.assertEquals("??q=200",
-               AddressBuilder.begin().queryEncoded("?q=200").toString());
-   }
-
-   @Test
-   public void testBuildQueryWithQuestionMarkInValue()
-   {
-      Assert.assertEquals("?q=?200",
-               AddressBuilder.begin().queryEncoded("q", "?200").toString());
-   }
-
-   @Test
    public void testBuildQuery()
    {
       Assert.assertEquals("?q=200",
@@ -227,60 +199,6 @@ public class AddressBuilderTest
    {
       Assert.assertEquals("file://:80",
                AddressBuilder.begin().protocol("file").port(80).build().toString());
-   }
-
-   @Test
-   public void testParameterEncoding()
-   {
-      Assert.assertEquals("http://localhost/a%20b?q=a+b",
-               AddressBuilder.begin()
-                        .protocol("http")
-                        .host("localhost")
-                        .path("/{p}")
-                        .set("p", "a b")
-                        .query("q", "a b")
-                        .toString());
-   }
-
-   @Test
-   public void testParameterEncodingResult()
-   {
-      Assert.assertEquals("http://localhost/a%20b?q=a+b",
-               AddressBuilder.begin()
-                        .protocol("http")
-                        .host("localhost")
-                        .path("/{p}")
-                        .set("p", "a b")
-                        .query("q", "a b")
-                        .build()
-                        .toString());
-   }
-
-   @Test
-   public void testParametersWithoutEncoding()
-   {
-      Assert.assertEquals("http://localhost/a%20b?q=a+b",
-               AddressBuilder.begin()
-                        .protocol("http")
-                        .host("localhost")
-                        .path("/{p}")
-                        .setEncoded("p", "a%20b")
-                        .queryEncoded("q", "a+b")
-                        .toString());
-   }
-
-   @Test
-   public void testParametersWithoutEncodingResult()
-   {
-      Assert.assertEquals("http://localhost/a%20b?q=a+b",
-               AddressBuilder.begin()
-                        .protocol("http")
-                        .host("localhost")
-                        .path("/{p}")
-                        .setEncoded("p", "a%20b")
-                        .queryEncoded("q", "a+b")
-                        .build()
-                        .toString());
    }
 
    @Test

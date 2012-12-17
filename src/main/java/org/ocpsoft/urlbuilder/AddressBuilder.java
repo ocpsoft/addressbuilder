@@ -1,16 +1,21 @@
 package org.ocpsoft.urlbuilder;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.ocpsoft.urlbuilder.util.Decoder;
 import org.ocpsoft.urlbuilder.util.Encoder;
 
+/**
+ * Internal state is not encoded, plain UTF-8.
+ * 
+ * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ */
 public class AddressBuilder
 {
    private volatile Address address;
@@ -39,32 +44,22 @@ public class AddressBuilder
       return address;
    }
 
-   public static Address create(String url)
+   /**
+    * Must be given a fully encoded URL. Otherwise such URLs are not parse-able.
+    * 
+    * @throws IllegalArgumentException when the input URL or URL fragment is not valid.
+    */
+   public static Address create(String url) throws IllegalArgumentException
    {
       try {
-
-         boolean startWithPath = url.startsWith("/");
-
-         URL u = null;
-         if (startWithPath) {
-            u = new URL("http://127.0.0.1" + url);
-         }
-         else {
-            u = new URL(url);
-         }
-
-         AddressBuilderBase builder = AddressBuilder.begin();
-         if (!startWithPath) {
-            builder.protocol(u.getProtocol()).host(u.getHost());
-            if (u.getPort() != -1) {
-               builder.port(u.getPort());
-            }
-         }
-
-         return builder.path(u.getPath()).queryLiteral(u.getQuery()).anchor(u.getRef()).build();
+         URI u = new URI(url);
+         return AddressBuilder.begin().protocol(u.getScheme()).host(u.getHost()).port(u.getPort())
+                  .pathEncoded(u.getRawPath()).queryLiteral(u.getRawQuery()).anchor(u.getRawFragment()).build();
       }
-      catch (MalformedURLException e) {
-         throw new RuntimeException(e);
+      catch (URISyntaxException e) {
+         throw new IllegalArgumentException(
+                  "Must pass a properly encoded URL or URL fragment. Consider encoding relevant portions of the URL with ["
+                           + Encoder.class + "]", e);
       }
    }
 
@@ -82,13 +77,20 @@ public class AddressBuilder
 
    AddressBuilderPort port(int port)
    {
-      this.port = port;
+      if (port >= 0)
+         this.port = port;
       return new AddressBuilderPort(this);
    }
 
    AddressBuilderPath path(CharSequence path)
    {
       this.path = path;
+      return new AddressBuilderPath(this);
+   }
+
+   AddressBuilderPath pathEncoded(CharSequence path)
+   {
+      this.path = Decoder.path(path);
       return new AddressBuilderPath(this);
    }
 
@@ -111,7 +113,10 @@ public class AddressBuilder
          if (query.startsWith("?"))
             query = query.substring(1);
 
-         Map<CharSequence, List<CharSequence>> params = new HashMap<CharSequence, List<CharSequence>>();
+         /*
+          * Linked hash map is important here in order to retain the order of query parameters.
+          */
+         Map<CharSequence, List<CharSequence>> params = new LinkedHashMap<CharSequence, List<CharSequence>>();
          query = decodeHTMLAmpersands(query);
          int index = 0;
 
@@ -143,7 +148,6 @@ public class AddressBuilder
                value = pair.substring(pos + 1, pair.length());
             }
 
-            queryEncoded(name, value);
             List<CharSequence> list = params.get(name);
             if (list == null)
             {

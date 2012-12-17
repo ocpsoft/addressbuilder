@@ -61,11 +61,12 @@ class Parameter
 
    public String getValueAsQueryParam(int index)
    {
+      Object value = values.get(index);
       if (encode) {
-         return Encoder.query(values.get(index).toString());
+         return Encoder.query(value == null ? null : value.toString());
       }
       else {
-         return values.get(index).toString();
+         return value == null ? null : value.toString();
       }
    }
 
